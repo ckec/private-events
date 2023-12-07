@@ -1,0 +1,82 @@
+<div class="text-center m-4">
+  <h1>User Profile</h1>
+</div>
+
+<div class="container flex align-items-center">
+  <div class="row">
+
+    <!-- Left Column -->
+    <div class="flex">
+      <div class="text-center pb-5">
+        <h4>Events created by you</h4>
+      </div>
+
+      <% if @events.any? %>
+        <% @events.each do |event| %>
+          <ul>
+            <li>
+              <h5><strong><%= event.name %></strong></h5>
+              <p>Date: <%= event.date %></p>
+              <p><%= link_to 'See details', event_path(event), class: 'btn btn-primary' %></p>
+            </li>
+          </ul>
+        <% end %>
+      <% else %>
+        <div class="text-danger text-center">
+          <p>You haven't created any events.</p>
+        </div>
+      <% end %>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Right Column -->
+    <div class="flex">
+      <div class="text-center pb-5">
+        <h4>Future events you attend</h4>
+      </div>
+
+      <% if @attended_events.any? { |attended_event| attended_event.date > Time.now } %>
+        <% @attended_events.each do |attended_event| %>
+          <% if attended_event.date > Time.now %>
+            <ul>
+              <li>
+                <h5><strong><%= attended_event.name %></strong></h5>
+                <p>Date: <%= attended_event.date %></p>
+                <p><%= link_to 'See details', event_path(attended_event), class: 'btn btn-primary' %></p>
+              </li>
+            </ul>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="text-danger text-center">
+          <p>You aren't attending any future events.</p>
+        </div>
+      <% end %>
+
+      <hr class="my-4">
+
+      <div class="text-center pb-5">
+        <h4>Past events you attended to</h4>
+      </div>
+
+      <% if @attended_events.any? { |attended_event| attended_event.date < Time.now } %>
+        <% @attended_events.each do |attended_event| %>
+          <% if attended_event.date < Time.now %>
+            <ul>
+              <li>
+                <h5><strong><%= attended_event.name %></strong></h5>
+                <p>Date: <%= attended_event.date %></p>
+                <p><%= link_to 'See details', event_path(attended_event), class: 'btn btn-primary' %></p>
+              </li>
+            </ul>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="text-danger text-center">
+          <p>You haven't attended to any event in the past.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

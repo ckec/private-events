@@ -1,0 +1,48 @@
+<% if @future_events.any? %>
+  <h1 class="centered-header">Future Events</h1>
+  <ul class="list-group">
+    <% @future_events.each do |event| %>
+          <li class="list-group-item mb-2 border">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong style="font-size: 20px;"><%= event.name %></strong>
+              </div>
+              <div class="btn-group" role="group">
+                <% if current_user && current_user == event.creator %>
+                  <%= form_with(model: event, method: :delete) do |form| %>
+                    <%= form.submit 'Cancel your event', class: 'btn btn-danger' %>
+                  <% end %>
+                <% end %>
+                <%= form_with(model: event, method: :get) do |form| %>
+                  <%= form.submit 'See details', class: 'btn btn-primary' %>
+                <% end %>
+              </div>
+            </div>
+    <% end %>
+  </ul>
+<% end %>
+
+
+<% if @past_events.any? %>
+  <h1 class="centered-header">Past Events</h1>
+  <ul class="list-group">
+    <% @past_events.each do |event| %>
+        <li class="list-group-item mb-2 border">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong style="font-size: 20px;"><%= event.name %></strong>
+            </div>
+            <div class="btn-group" role="group">
+              <% if current_user && current_user == event.creator && @future_events.include?(event)%>
+                <%= form_with(model: event, method: :delete) do |form| %>
+                  <%= form.submit 'Delete', class: 'btn btn-danger' %>
+                <% end %>
+              <% end %>
+              <%= form_with(model: event, method: :get) do |form| %>
+                <%= form.submit 'See details', class: 'btn btn-primary' %>
+              <% end %>
+            </div>
+          </div>
+    <% end %>
+  </ul>
+<% end %>
